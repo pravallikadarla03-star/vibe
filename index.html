@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étoile - Fashion Dresses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-banner {
+            background: #ff6b9d;
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b9d;
+            letter-spacing: 3px;
+            font-style: italic;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1rem;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b9d;
+        }
+
+        /* Cart Button */
+        .cart-button {
+            position: relative;
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+        }
+
+        .cart-button:hover {
+            background: #ff4d88;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+        }
+
+        .cart-count {
+            background: #fff;
+            color: #ff6b9d;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            right: -420px;
+            top: 0;
+            width: 420px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+            transition: right 0.4s ease;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.8rem;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ff6b9d;
+            color: white;
+        }
+
+        .cart-header h3 {
+            font-size: 1.6rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.3s;
+        }
+
+        .close-cart:hover {
+            transform: rotate(90deg);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 90px;
+            height: 110px;
+            background: linear-gradient(135deg, #ffd6e8 0%, #ffe8f2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-details h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: #333;
+        }
+
+        .cart-item-size {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-item-price {
+            color: #ff6b9d;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 0.3rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-top: 0.7rem;
+        }
+
+        .quantity-controls button {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .quantity-controls button:hover {
+            background: #ff6b9d;
+            color: white;
+            border-color: #ff6b9d;
+        }
+
+        .remove-item {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .remove-item:hover {
+            color: #ff6b9d;
+        }
+
+        .cart-footer {
+            padding: 1.8rem;
+            border-top: 2px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .checkout-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .checkout-button:hover {
+            background: #ff4d88;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: #999;
+        }
+
+        .empty-cart-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1999;
+        }
+
+        .cart-overlay.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffa8c5 100%);
+            padding: 6rem 5%;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background: white;
+            color: #ff6b9d;
+            padding: 1.2rem 3rem;
+            text-decoration: none;
+            border-radius: 30px;
+            display: inline-block;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Categories */
+        .categories {
+            padding: 5rem 5%;
+            background: #f9f9f9;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 3rem;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #ffd6e8 0%, #ffe8f2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .category-info {
+            padding: 1.8rem;
+            text-align: center;
+        }
+
+        .category-info h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .category-info p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* Products */
+        .products {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, #ffd6e8 0%, #ffe8f2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4d88;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .product-details {
+            padding: 1.5rem;
+        }
+
+        .product-details h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .product-rating {
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: #ff6b9d;
+            font-weight: bold;
+            margin: 0.8rem 0;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.1rem;
+            margin-left: 0.5rem;
+        }
+
+        .size-selector {
+            margin: 1rem 0;
+        }
+
+        .size-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .size-option {
+            padding: 0.5rem 1rem;
+            border: 2px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .size-option:hover {
+            border-color: #ff6b9d;
+        }
+
+        .size-option.selected {
+            background: #ff6b9d;
+            color: white;
+            border-color: #ff6b9d;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 1rem;
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .add-to-cart:hover {
+            background: #ff4d88;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Contact Form */
+        .contact-section {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe8f2 100%);
+        }
+
+        .contact-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .contact-intro {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .contact-intro h2 {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .contact-intro p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff6b9d;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .submit-button {
+            background: #ff6b9d;
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background: #ff4d88;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background: #333;
+            color: white;
+            padding: 4rem 5%;
+            text-align: center;
+        }
+
+        .newsletter h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            padding: 1rem 2.5rem;
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background: #ff4d88;
+        }
+
+        /* Footer */
+        footer {
+            background: #222;
+            color: #fff;
+            padding: 3.5rem 5%;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.2rem;
+            color: #ff6b9d;
+            font-size: 1.3rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #ff6b9d;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 1.8rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            text-align: center;
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                font-size: 0.85rem;
+                gap: 0.5rem;
+            }
+
+            .cart-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>🛍️ Your Cart</h3>
+            <button class="close-cart" id="closeCart">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="empty-cart">
+                <div class="empty-cart-icon">👗</div>
+                <p>Your cart is empty</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Start shopping to add items!</p>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">₹0</span>
+            </div>
+            <button class="checkout-button">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="top-banner">
+            ✨ Free Shipping on Orders Above ₹2,999 | New Arrivals Every Week!
+        </div>
+        <nav>
+            <div class="logo">Étoile</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#categories">Collections</a></li>
+                <li><a href="#products">Shop</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li>
+                    <button class="cart-button" id="cartBtn">
+                        🛒 Cart
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Dress Your Dreams</h1>
+        <p>Discover the latest trends in women's fashion</p>
+        <a href="#products" class="cta-button">Shop New Arrivals</a>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categories">
+        <h2 class="section-title">Shop by Style</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-image">👗</div>
+                <div class="category-info">
+                    <h3>Casual Dresses</h3>
+                    <p>Effortless style for everyday wear</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">💃</div>
+                <div class="category-info">
+                    <h3>Party Dresses</h3>
+                    <p>Shine bright at every celebration</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">🌸</div>
+                <div class="category-info">
+                    <h3>Summer Collection</h3>
+                    <p>Light and breezy for sunny days</p>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-image">✨</div>
+                <div class="category-info">
+                    <h3>Formal Wear</h3>
+                    <p>Elegant pieces for special occasions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="products">
+        <h2 class="section-title">Featured Dresses</h2>
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="sale-badge">20% OFF</div>
+                    👗
+                </div>
+                <div class="product-details">
+                    <h4>Floral Maxi Dress</h4>
+                    <div class="product-rating">★★★★★ (124 reviews)</div>
+                    <p class="product-description">Beautiful flowing maxi with floral print</p>
+                    <div class="product-price">
+                        ₹2,399
+                        <span class="old-price">₹2,999</span>
+                    </div>
+                    <div class="size-selector">
+                        <label>Select Size:</label>
+                        <div class="size-options" data-product="1">
+                            <button class="size-option" data-size="S">S</button>
+                            <button class="size-option" data-size="M">M</button>
+                            <button class="size-option" data-size="L">L</button>
+                            <button class="size-option" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                    <button class="add-to-cart" 
+                            data-id="1"
+                            data-name="Floral Maxi Dress" 
+                            data-price="2399" 
+                            data-icon="👗"
+                            disabled>
+                        Select Size to Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-image">💃</div>
+                <div class="product-details">
+                    <h4>Sequin Party Dress</h4>
+                    <div class="product-rating">★★★★☆ (89 reviews)</div>
+                    <p class="product-description">Sparkle all night in this stunning piece</p>
+                    <div class="product-price">₹3,799</div>
+                    <div class="size-selector">
+                        <label>Select Size:</label>
+                        <div class="size-options" data-product="2">
+                            <button class="size-option" data-size="S">S</button>
+                            <button class="size-option" data-size="M">M</button>
+                            <button class="size-option" data-size="L">L</button>
+                            <button class="size-option" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                    <button class="add-to-cart" 
+                            data-id="2"
+                            data-name="Sequin Party Dress" 
+                            data-price="3799" 
+                            data-icon="💃"
+                            disabled>
+                        Select Size to Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="sale-badge">15% OFF</div>
+                    🌸
+                </div>
+                <div class="product-details">
+                    <h4>Cotton Summer Dress</h4>
+                    <div class="product-rating">★★★★★ (203 reviews)</div>
+                    <p class="product-description">Breathable cotton for hot summer days</p>
+                    <div class="product-price">
+                        ₹1,699
+                        <span class="old-price">₹1,999</span>
+                    </div>
+                    <div class="size-selector">
+                        <label>Select Size:</label>
+                        <div class="size-options" data-product="3">
+                            <button class="size-option" data-size="S">S</button>
+                            <button class="size-option" data-size="M">M</button>
+                            <button class="size-option" data-size="L">L</button>
+                            <button class="size-option" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                    <button class="add-to-cart" 
+                            data-id="3"
+                            data-name="Cotton Summer Dress" 
+                            data-price="1699" 
+                            data-icon="🌸"
+                            disabled>
+                        Select Size to Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="product-image">✨</div>
+                <div class="product-details">
+                    <h4>Elegant Evening Gown</h4>
+                    <div class="product-rating">★★★★★ (67 reviews)</div>
+                    <p class="product-description">Sophisticated design for formal events</p>
+                    <div class="product-price">₹4,999</div>
+                    <div class="size-selector">
+                        <label>Select Size:</label>
+                        <div class="size-options" data-product="4">
+                            <button class="size-option" data-size="S">S</button>
+                            <button class="size-option" data-size="M">M</button>
+                            <button class="size-option" data-size="L">L</button>
+                            <button class="size-option" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                    <button class="add-to-cart" 
+                            data-id="4"
+                            data-name="Elegant Evening Gown" 
+                            data-price="4999" 
+                            data-icon="✨"
+                            disabled>
+                        Select Size to Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="product-image">🎀</div>
+                <div class="product-details">
+                    <h4>A-Line Midi Dress</h4>
+                    <div class="product-rating">★★★★★ (156 reviews)</div>
+                    <p class="product-description">Classic silhouette for any occasion</p>
+                    <div class="product-price">₹2,899</div>
+                    <div class="size-selector">
+                        <label>Select Size:</label>
+                        <div class="size-options" data-product="5">
+                            <button class="size-option" data-size="S">S</button>
+                            <button class="size-option" data-size="M">M</button>
+                            <button class="size-option" data-size="L">L</button>
+                            <button class="size-option" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                    <button class="add-to-cart" 
+                            data-id="5"
+                            data-name="A-Line Midi Dress" 
+                            data-price="2899" 
+                            data-icon="🎀"
+                            disabled>
+                        Select Size to Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="sale-badge">25% OFF</div>
+                    🌺
+                </div>
+                <div class="product-details">
+                    <h4>Bohemian Wrap Dress</h4>
+                    <div class="product-rating">★★★★☆ (92 reviews)</div>
+                    <p class="product-description">Free-spirited style with comfort</p>
+                    <div class="product-price">
+                        ₹2,249
+                        <span class="old-price">₹2,999</span>
+                    </div>
+                    <div class="size-selector">
+                        <label>Select Size:</label>
+                        <div class="size-options" data-product="6">
+                            <button class="size-option" data-size="S">S</button>
+                            <button class="size-option" data-size="M">M</button>
+                            <button class="size-option" data-size="L">L</button>
+                            <button class="size-option" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                    <button class="add-to-cart" 
+                            data-id="6"
+                            data-name="Bohemian Wrap Dress" 
+                            data-price="2249" 
+                            data-icon="🌺"
+                            disabled>
+                        Select Size to Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="contact-intro">
+                <h2>Get in Touch</h2>
+                <p>Have questions? We'd love to hear from you!</p>
+            </div>
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select a subject</option>
+                        <option value="order">Order Inquiry</option>
+                        <option value="product">Product Question</option>
+                        <option value="sizing">Sizing Help</option>
+                        <option value="return">Returns & Exchanges</option>
+                        <option value="wholesale">Wholesale Inquiry</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message *</label>
+                    <textarea id="message" name="message" required placeholder="Tell us how we can help you..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <h3>Join Our Fashion Family</h3>
+        <p>Subscribe to get exclusive offers, style tips, and early access to new collections!</p>
+        <form class="newsletter-form" id="newsletterForm">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Étoile</h4>
+                <p>Your destination for trendy, affordable, and high-quality dresses. We believe every woman deserves to feel beautiful and confident.</p>
+                <div class="social-links">
+                    <a href="#">📘</a>
+                    <a href="#">📷</a>
+                    <a href="#">🐦</a>
+                    <a href="#">📌</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                    <li><a href="#">Sale</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                    <li><a href="#">Gift Cards</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customer Care</h4>
+                <ul>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#">Shipping & Delivery</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Track Your Order</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <p>📧 Email: hello@etoile.com<br>
+                📱 Phone: +91 98765 43210<br>
+                🕒 Hours: Mon-Sat, 9am-8pm<br>
+                📍 Mumbai, Maharashtra, India</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 Étoile Fashion. All rights reserved. | Privacy Policy | Terms & Conditions</p>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        let cart = [];
+        let selectedSizes = {};
+
+        // Get elements
+        const cartBtn = document.getElementById('cartBtn');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const closeCart = document.getElementById('closeCart');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartFooter = document.getElementById('cartFooter');
+
+        // Open cart
+        cartBtn.addEventListener('click', () => {
+            cartSidebar.classList.add('active');
+            cartOverlay.classList.add('active');
+        });
+
+        // Close cart
+        closeCart.addEventListener('click', () => {
+            cartSidebar.classList.remove('active');
+            cartOverlay.classList.remove('active');
+        });
+
+        cartOverlay.addEventListener('click', () => {
+            cartSidebar.classList.remove('active');
+            cartOverlay.classList.remove('active');
+        });
+
+        // Size selection
+        const sizeOptions = document.querySelectorAll('.size-option');
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const productId = this.closest('.size-options').getAttribute('data-product');
+                const size = this.getAttribute('data-size');
+                
+                // Remove selected class from siblings
+                this.closest('.size-options').querySelectorAll('.size-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class
+                this.classList.add('selected');
+                
+                // Store selected size
+                selectedSizes[productId] = size;
+                
+                // Enable add to cart button
+                const addToCartBtn = this.closest('.product-card').querySelector('.add-to-cart');
+                addToCartBtn.disabled = false;
+                addToCartBtn.textContent = 'Add to Cart';
+            });
+        });
+
+        // Add to cart
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.disabled) return;
+                
+                const productId = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const price = parseInt(this.getAttribute('data-price'));
+                const icon = this.getAttribute('data-icon');
+                const size = selectedSizes[productId];
+
+                if (!size) {
+                    alert('Please select a size first!');
+                    return;
+                }
+
+                addToCart(name, price, icon, size, productId);
+                
+                // Visual feedback
+                this.textContent = 'Added! ✓';
+                this.style.background = '#4caf50';
+                setTimeout(() => {
+                    this.textContent = 'Add to Cart';
+                    this.style.background = '';
+                }, 1500);
+            });
+        });
+
+        function addToCart(name, price, icon, size, productId) {
+            const existingItem = cart.find(item => item.name === name && item.size === size);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    icon: icon,
+                    size: size,
+                    quantity: 1,
+                    productId: productId
+                });
+            }
+            
+            updateCart();
+        }
+
+        function updateCart() {
+            // Update count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            // Update cart items display
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">👗</div>
+                        <p>Your cart is empty</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Start shopping to add items!</p>
+                    </div>
+                `;
+                cartFooter.style.display = 'none';
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div class="cart-item-image">${item.icon}</div>
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <div class="cart-item-size">Size: ${item.size}</div>
+                            <div class="cart-item-price">₹${item.price.toLocaleString()}</div>
+                            <div class="quantity-controls">
+                                <button onclick="decreaseQuantity(${index})">−</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="increaseQuantity(${index})">+</button>
+                            </div>
+                            <a class="remove-item" onclick="removeItem(${index})">Remove</a>
+                        </div>
+                    </div>
+                `).join('');
+                
+                cartFooter.style.display = 'block';
+            }
+
+            // Update total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.textContent = `₹${total.toLocaleString()}`;
+        }
+
+        function increaseQuantity(index) {
+            cart[index].quantity++;
+            updateCart();
+        }
+
+        function decreaseQuantity(index) {
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+            } else {
+                cart.splice(index, 1);
+            }
+            updateCart();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        // Contact form handling
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+
+            console.log('Contact Form submitted:', formData);
+            
+            alert('Thank you for reaching out! We\'ll get back to you within 24 hours.');
+            contactForm.reset();
+        });
+
+        // Newsletter form handling
+        const newsletterForm = document.getElementById('newsletterForm');
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = e.target.querySelector('input[type="email"]').value;
+            console.log('Newsletter signup:', email);
+            
+            alert('🎉 Thank you for subscribing! Check your inbox for a welcome gift.');
+            newsletterForm.reset();
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
